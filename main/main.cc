@@ -2,9 +2,11 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 
-#define LED_PIN GPIO_NUM_2
+#include "static_task.h"
+#include "application.h"
 
-void blink_led(void* args) {
+#define LED_PIN GPIO_NUM_2
+void blink_led(void*) {
     esp_rom_gpio_pad_select_gpio(LED_PIN);
     ESP_ERROR_CHECK(gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT));
     bool led_state = false;
@@ -15,6 +17,15 @@ void blink_led(void* args) {
     }
 }
 
+void app_task_func(void*) {
+    Application app;
+
+    for (;;) {
+        vTaskDelay(pdTICKS_TO_MS(100));
+    }
+}
+
 extern "C" void app_main() {
-    xTaskCreate(blink_led, "blink_led", 4096, nullptr, 10, nullptr);
+    static StaticTask<512> led_task{ blink_led, nullptr, "blink_led", 10 };
+    static StaticTask<4096> application_task{ app_task_func, nullptr, "application_task", 15 };
 }
