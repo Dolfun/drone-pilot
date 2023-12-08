@@ -2,9 +2,8 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
-#include <array>
 #include <string>
+#include <array>
 
 template <size_t N>
 class StaticTask {
