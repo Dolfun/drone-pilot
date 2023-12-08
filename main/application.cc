@@ -4,6 +4,6 @@
 #include "esp_log.h"
 
 Application::Application() {
-    // Start Wi-Fi
-    (void)WifiManager::instance();
+  // Start Wi-Fi
+  (void)WifiManager::instance();
 }

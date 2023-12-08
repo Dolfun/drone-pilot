@@ -4,9 +4,15 @@
 #include "wifi_manager.h"
 #include "esp_event.h"
 
-class Application {
+class Application : public WifiObserver {
 public:
-    Application();
+  Application();
+
+  void on_connect() override {
+  }
+
+  void on_disconnect() override {
+  }
 private:
 
 };
