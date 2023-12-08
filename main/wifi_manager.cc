@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <string>
 
-const std::string wifi_ssid{ CONFIG_ESP_WIFI_SSID };
+const std::string wifi_ssid{ CONFIG_ESP_WIFI_SSID     };
 const std::string wifi_pass{ CONFIG_ESP_WIFI_PASSWORD };
 
 bool WifiManager::is_connected{ false };
