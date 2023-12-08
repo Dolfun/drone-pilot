@@ -1,5 +1,4 @@
-#ifndef STATIC_TASK_H_INCLUDED
-#define STATIC_TASK_H_INCLUDED
+#pragma once
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -32,5 +31,3 @@ private:
 
   TaskHandle_t task_handle = nullptr;
 };
-
-#endif

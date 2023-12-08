@@ -1,5 +1,4 @@
-#ifndef WIFI_OBSERVER_H_INCLUDED
-#define WIFI_OBSERVER_H_INCLUDED
+#pragma once
 
 #include "wifi_manager.h"
 #include <forward_list>
@@ -28,5 +27,3 @@ private:
   static std::forward_list<WifiObserver*> observers;
   std::forward_list<WifiObserver*>::iterator it;
 };
-
-#endif

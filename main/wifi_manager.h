@@ -1,5 +1,4 @@
-#ifndef WIFI_MANAGER_H_INCLUDED
-#define WIFI_MANAGER_H_INCLUDED
+#pragma once
 
 #include "wifi_observer.h"
 #include "freertos/FreeRTOS.h"
@@ -30,5 +29,3 @@ private:
   static void ip_get_callback(void*, esp_event_base_t, int32_t, void*);
   static void wifi_disconnect_callback(void*, esp_event_base_t, int32_t, void*);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef APPLICATION_H_INCLUDED
-#define APPLICATION_H_INCLUDED
+#pragma once
 
 #include "wifi_manager.h"
 #include "esp_event.h"
@@ -16,5 +15,3 @@ public:
 private:
 
 };
-
-#endif
