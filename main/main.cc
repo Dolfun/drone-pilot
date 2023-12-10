@@ -17,7 +17,7 @@ void blink_led(void*) {
   }
 }
 
-void app_task_func(void*) {
+void app_task_handle(void*) {
   Application app;
 
   for (;;) {
@@ -26,6 +26,6 @@ void app_task_func(void*) {
 }
 
 extern "C" void app_main() {
-  static StaticTask<512> led_task{ blink_led, nullptr, "blink_led", 10 };
-  static StaticTask<4096> application_task{ app_task_func, nullptr, "application_task", 15 };
+  static StaticTask<512> led_task{ "blink_led", 10, nullptr, blink_led };
+  static StaticTask<4096> application_task{ "application_task", 15, nullptr, app_task_handle };
 }

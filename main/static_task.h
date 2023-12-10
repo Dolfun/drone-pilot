@@ -8,10 +8,10 @@
 template <size_t N>
 class StaticTask {
 public:
-  StaticTask(TaskFunction_t func, void* arg, std::string name, UBaseType_t priority) {
+  StaticTask(std::string name, UBaseType_t priority, void* arg, TaskFunction_t handle) {
     task_handle = 
       xTaskCreateStatic(
-        func,
+        handle,
         name.c_str(),
         static_cast<uint32_t>(N),
         arg,
