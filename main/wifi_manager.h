@@ -33,6 +33,7 @@ public:
   }
 private:
   static bool is_connected;
+  static bool once_flag;
 
   WifiManager();
 

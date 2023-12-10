@@ -12,6 +12,7 @@ const std::string wifi_ssid { CONFIG_ESP_WIFI_SSID     };
 const std::string wifi_pass { CONFIG_ESP_WIFI_PASSWORD };
 
 bool WifiManager::is_connected { false };
+bool WifiManager::once_flag    { true  };
 WifiManagerCallback WifiManager::on_connect_callback    { do_nothing };
 WifiManagerCallback WifiManager::on_disconnect_callback { do_nothing };
 
@@ -65,12 +66,17 @@ void WifiManager::ip_get_callback(void*, esp_event_base_t, int32_t, void* event_
   ESP_LOGI(WIFI_LOG_TAG, "got ip: %s", ip_address);
 
   is_connected = true;
+  once_flag = true;
   on_connect_callback();
 }
 
 void WifiManager::wifi_disconnect_callback(void*, esp_event_base_t, int32_t, void*) {
   is_connected = false;
-  on_disconnect_callback();
+
+  if (once_flag) {
+    once_flag = false;
+    on_disconnect_callback();
+  }
   
   ESP_LOGI(WIFI_LOG_TAG, "retrying to connect");
   esp_wifi_connect();
