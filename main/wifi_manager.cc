@@ -1,5 +1,4 @@
 #include "wifi_manager.h"
-
 #include "freertos/FreeRTOS.h"
 #include "nvs_flash.h"
 #include "esp_event.h"
@@ -9,11 +8,12 @@
 #include <algorithm>
 #include <string>
 
-const std::string wifi_ssid{ CONFIG_ESP_WIFI_SSID     };
-const std::string wifi_pass{ CONFIG_ESP_WIFI_PASSWORD };
+const std::string wifi_ssid { CONFIG_ESP_WIFI_SSID     };
+const std::string wifi_pass { CONFIG_ESP_WIFI_PASSWORD };
 
-bool WifiManager::is_connected{ false };
-std::forward_list<WifiObserver*> WifiObserver::observers{};
+bool WifiManager::is_connected { false };
+WifiManagerCallback WifiManager::on_connect_callback    { do_nothing };
+WifiManagerCallback WifiManager::on_disconnect_callback { do_nothing };
 
 WifiManager::WifiManager() {
   auto error = nvs_flash_init();
@@ -30,10 +30,10 @@ WifiManager::WifiManager() {
   wifi_init_config_t wifi_init_config = WIFI_INIT_CONFIG_DEFAULT();
   ESP_ERROR_CHECK(esp_wifi_init(&wifi_init_config));
 
-  wifi_scan_threshold_t wifi_scan_threshold{};
+  wifi_scan_threshold_t wifi_scan_threshold {};
   wifi_scan_threshold.authmode = WIFI_AUTH_WPA_PSK;
 
-  wifi_sta_config_t wifi_sta_config{};
+  wifi_sta_config_t wifi_sta_config {};
   std::copy(wifi_ssid.begin(), wifi_ssid.end(), wifi_sta_config.ssid);
   std::copy(wifi_pass.begin(), wifi_pass.end(), wifi_sta_config.password);
   wifi_sta_config.threshold = wifi_scan_threshold;
@@ -65,16 +65,12 @@ void WifiManager::ip_get_callback(void*, esp_event_base_t, int32_t, void* event_
   ESP_LOGI(WIFI_LOG_TAG, "got ip: %s", ip_address);
 
   is_connected = true;
-  for (auto observer : WifiObserver::observers) {
-    observer->on_connect();
-  }
+  on_connect_callback();
 }
 
 void WifiManager::wifi_disconnect_callback(void*, esp_event_base_t, int32_t, void*) {
   is_connected = false;
-  for (auto observer : WifiObserver::observers) {
-    observer->on_disconnect();
-  }
+  on_disconnect_callback();
   
   ESP_LOGI(WIFI_LOG_TAG, "retrying to connect");
   esp_wifi_connect();
