@@ -1,8 +1,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
-#include "static_task.h"
-#include "application.h"
+#include "StaticTask.h"
+#include "Application.h"
 
 #define LED_PIN GPIO_NUM_2
 void blink_led(void*) {
@@ -20,7 +20,7 @@ void app_task_handle(void*) {
   Application app;
 
   for (;;) {
-    vTaskDelay(pdTICKS_TO_MS(100));
+    vTaskDelay(pdTICKS_TO_MS(500));
   }
 }
 

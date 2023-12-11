@@ -1,17 +1,17 @@
 #pragma once
 
-#include "wifi_manager.h"
+#include "ConnectionManager.h"
+#include "WifiManager.h"
 #include "esp_event.h"
+#include <memory>
 
-class Application : public WifiObserver {
+class Application {
 public:
   Application();
 
-  void on_connect() override {
-  }
-
-  void on_disconnect() override {
-  }
+  void on_wifi_connect();
+  void on_wifi_disconnect();
 private:
-
+  WifiManager& wifi_manager;
+  std::unique_ptr<ConnectionManager> connection_manager {};
 };
