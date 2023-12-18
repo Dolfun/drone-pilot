@@ -2,17 +2,16 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <string>
 #include <array>
 
 template <size_t N>
 class StaticTask {
 public:
-  StaticTask(std::string name, UBaseType_t priority, void* arg, TaskFunction_t handle) {
+  StaticTask(const char* name, UBaseType_t priority, void* arg, TaskFunction_t handle) {
     task_handle = 
       xTaskCreateStatic(
         handle,
-        name.c_str(),
+        name,
         static_cast<uint32_t>(N),
         arg,
         priority,
