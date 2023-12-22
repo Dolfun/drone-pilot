@@ -17,7 +17,7 @@ namespace WifiManager {
 
       esp_event_handler_instance_register(
         _event_base, _event_id,
-        handler, this,
+        handler, static_cast<void*>(this),
         &instance
       );
     }
