@@ -1,6 +1,5 @@
 #include "WifiManager.h"
 #include "nvs_flash.h"
-#include "esp_wifi.h"
 #include "esp_log.h"
 #include <algorithm>
 #include <string>
@@ -58,7 +57,7 @@ void WifiManager::init() {
       auto event = static_cast<ip_event_got_ip_t*>(event_data);
       char ip_address[16];
       sprintf(ip_address, IPSTR, IP2STR(&event->ip_info.ip));
-      ESP_LOGI(WIFI_LOG_TAG, "wifi connected!\n ip address: %s", ip_address);
+      ESP_LOGI(WIFI_LOG_TAG, "wifi connected to: %s", ip_address);
     },
     nullptr, nullptr
   );
@@ -66,7 +65,7 @@ void WifiManager::init() {
   esp_event_handler_instance_register(
     WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, 
     [] (void*, esp_event_base_t, int32_t, void*) {
-      ESP_LOGI(WIFI_LOG_TAG, "wifi disconnected!\n retrying to connect...\n");
+      ESP_LOGI(WIFI_LOG_TAG, "retrying to connect...");
     esp_wifi_connect();
     },
     nullptr, nullptr
@@ -75,18 +74,4 @@ void WifiManager::init() {
 
 void WifiManager::start() {
   ESP_ERROR_CHECK(esp_wifi_start());
-}
-
-void WifiManager::register_on_connect_callback(void* arg, esp_event_handler_t callback) {
-  esp_event_handler_instance_register(
-    IP_EVENT, IP_EVENT_STA_GOT_IP, 
-    callback, arg, nullptr
-  );
-}
-
-void WifiManager::register_on_disconnect_callback(void* arg, esp_event_handler_t callback) {
-  esp_event_handler_instance_register(
-    WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, 
-    callback, arg, nullptr
-  );
 }
