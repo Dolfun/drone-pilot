@@ -1,13 +1,12 @@
 #include "WifiManager.h"
 #include "nvs_flash.h"
 #include "esp_log.h"
-#include <algorithm>
-#include <string>
+#include <cstring>
 
 #define WIFI_LOG_TAG "wifi_manager"
 
-const std::string wifi_ssid { CONFIG_ESP_WIFI_SSID     };
-const std::string wifi_pass { CONFIG_ESP_WIFI_PASSWORD };
+char wifi_ssid[32] = CONFIG_ESP_WIFI_SSID;
+char wifi_pass[64] = CONFIG_ESP_WIFI_PASSWORD;
 
 void WifiManager::init() {
   // Initialize non-volatile storage
@@ -31,8 +30,9 @@ void WifiManager::init() {
   wifi_scan_threshold.authmode = WIFI_AUTH_WPA_PSK;
 
   wifi_sta_config_t wifi_sta_config {};
-  std::copy(wifi_ssid.begin(), wifi_ssid.end(), wifi_sta_config.ssid);
-  std::copy(wifi_pass.begin(), wifi_pass.end(), wifi_sta_config.password);
+  std::memcpy(wifi_sta_config.ssid, wifi_ssid, sizeof(wifi_ssid));
+  std::memcpy(wifi_sta_config.password, wifi_pass, sizeof(wifi_pass));
+  
   wifi_sta_config.threshold = wifi_scan_threshold;
 
   wifi_config_t wifi_config = {

@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include "esp_wifi.h"
+
 namespace WifiManager {
   void init();
   void start();

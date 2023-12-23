@@ -3,6 +3,12 @@
 #include "freertos/task.h"
 #include <array>
 
+enum class TaskAffinity : UBaseType_t {
+  CPU0 = 0,
+  CPU1 = 1,
+  CPUx = tskNO_AFFINITY,
+};
+
 template <size_t N>
 class StaticTask {
 public:
@@ -16,6 +22,20 @@ public:
         priority,
         stack.data(),
         &task_buffer
+      );
+  }
+
+  StaticTask(const char* name, TaskAffinity affinity, UBaseType_t priority, void* arg, TaskFunction_t handle) {
+    task_handle = 
+      xTaskCreateStaticPinnedToCore(
+        handle,
+        name,
+        static_cast<uint32_t>(N),
+        arg,
+        priority,
+        stack.data(),
+        &task_buffer,
+        static_cast<UBaseType_t>(affinity)
       );
   }
 
