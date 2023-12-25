@@ -1,6 +1,6 @@
 #pragma once
 #include "WifiManager.h"
-#include "StaticTask.h"
+#include "Task.h"
 #include <memory>
 
 class Application {
@@ -16,12 +16,12 @@ private:
   // std::unique_ptr<ConnectionManager> connection_manager{};
 };
 
-class ApplicationTask : public StaticTask<4096> {
+class ApplicationTask : public Task<4096> {
 public:
-  ApplicationTask()
-    : StaticTask("application_task", 17, nullptr, handle) {}
+  ApplicationTask() : Task("application_task", 17, task_function) {}
+  
 private:
-  static void handle(void*) {
+  static void task_function() {
     Application app;
 
     for (;;) {
