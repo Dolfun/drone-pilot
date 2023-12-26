@@ -7,5 +7,5 @@ idf_component_register(
     "."
   REQUIRES
     wifi_manager
-    utility
+    freertos_utility
 )
