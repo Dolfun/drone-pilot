@@ -1,4 +1,4 @@
 idf_component_register(
-  SRCS "Task.h" "CircularQueue.h"
+  SRCS "Task.hpp" "Queue.hpp"
   INCLUDE_DIRS "."
 )
