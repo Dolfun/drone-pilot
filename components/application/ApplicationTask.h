@@ -2,12 +2,12 @@
 #include "Application.h"
 #include "Task.hpp"
 
-class ApplicationTask : public Task<4096> {
+class ApplicationTask : public TaskInterface<4096> {
 public:
-  ApplicationTask() : Task("application_task", 17, task_function) {}
+  ApplicationTask() : TaskInterface("application_task", 17) {}
   
 private:
-  static void task_function() {
+  void task_function() override {
     WifiManager::init();
     
     Application app;

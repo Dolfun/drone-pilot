@@ -1,7 +1,6 @@
 #pragma once
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <functional>
 #include <array>
 
 enum class TaskAffinity : UBaseType_t {
@@ -13,37 +12,33 @@ enum class TaskAffinity : UBaseType_t {
 template <size_t N>
 class Task {
 public:
-  template <typename TaskFunction>
-  Task(const char* name, UBaseType_t priority, TaskFunction task_function)
-   : _task_function(task_function) {
-    task_handle = xTaskCreateStatic(
-      task_function_wrapper,
+  Task(const char* name, UBaseType_t priority, TaskFunction_t task_function, void* arg) {
+    handle = xTaskCreateStatic(
+      task_function,
       name,
       static_cast<uint32_t>(N),
-      static_cast<void*>(this),
+      arg,
       priority,
-      stack.data(),
+      stack_buffer.data(),
       &task_buffer
     );
   }
 
-  template <typename TaskFunction>
-  Task(const char* name, UBaseType_t priority, TaskAffinity affinity, TaskFunction task_function)
-   : _task_function(task_function) {
-    task_handle = xTaskCreateStaticPinnedToCore(
-      task_function_wrapper,
+  Task(const char* name, UBaseType_t priority, TaskAffinity affinity, TaskFunction_t task_function, void* arg) {
+    handle = xTaskCreateStaticPinnedToCore(
+      task_function,
       name,
       static_cast<uint32_t>(N),
-      static_cast<void*>(this),
+      arg,
       priority,
-      stack.data(),
+      stack_buffer.data(),
       &task_buffer,
       static_cast<UBaseType_t>(affinity)
     );
   }
 
-  ~Task() {
-    vTaskDelete(task_handle);
+  virtual ~Task() {
+    vTaskDelete(handle);
   }
 
   Task(const Task&) = delete;
@@ -52,15 +47,24 @@ public:
   Task& operator= (Task&&) = default;
 
 protected:
-  TaskHandle_t task_handle = nullptr;
+  TaskHandle_t handle;
 
 private:
-  std::function<void()> _task_function;
-  StaticTask_t task_buffer {};
-  std::array<StackType_t, N> stack {};
+  StaticTask_t task_buffer;
+  std::array<StackType_t, N> stack_buffer;
+};
+
+template <size_t N>
+class TaskInterface : public Task<N> {
+public:
+  TaskInterface(const char* name, UBaseType_t priority)
+    : Task<N>(name, priority, task_function_wrapper, static_cast<void*>(this)) {}
+
+private:
+  virtual void task_function() = 0;
 
   static void task_function_wrapper(void* arg) {
-    auto& self = *static_cast<Task<N>*>(arg);
-    self._task_function();
+    auto& self = *static_cast<TaskInterface*>(arg);
+    self.task_function();
   }
 };

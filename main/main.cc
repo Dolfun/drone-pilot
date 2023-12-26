@@ -4,7 +4,7 @@
 #include "esp_log.h"
 
 #define LED_PIN GPIO_NUM_2
-void blink_led() {
+void blink_led(void*) {
   esp_rom_gpio_pad_select_gpio(LED_PIN);
   ESP_ERROR_CHECK(gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT));
   bool led_state = false;
@@ -15,7 +15,7 @@ void blink_led() {
   }
 }
 
-static Task<512> led_task { "blink_led", 10, blink_led };
+static Task<512> led_task { "blink_led", 10, blink_led, nullptr };
 static ApplicationTask application_task {};
 
 extern "C" void app_main() {
