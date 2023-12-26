@@ -42,6 +42,15 @@ public:
     );
   }
 
+  ~Task() {
+    vTaskDelete(task_handle);
+  }
+
+  Task(const Task&) = delete;
+  Task& operator= (const Task&) = delete;
+  Task(Task&&) = default;
+  Task& operator= (Task&&) = default;
+
 protected:
   TaskHandle_t task_handle = nullptr;
 
