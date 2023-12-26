@@ -1,5 +1,11 @@
 idf_component_register(
-  SRCS "Application.h" "Application.cc"
-  INCLUDE_DIRS "."
-  REQUIRES wifi_manager utility
+  SRCS
+    "Application.h"
+    "Application.cc"
+    "ApplicationTask.h"
+  INCLUDE_DIRS
+    "."
+  REQUIRES
+    wifi_manager
+    utility
 )

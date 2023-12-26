@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 #include "esp_wifi.h"
 
 namespace WifiManager {
@@ -7,46 +6,48 @@ namespace WifiManager {
 void init();
 void start();
 
-class EventCallback {
+class CallbackInterface {
 public:
-  template <typename Callback>
-  EventCallback(esp_event_base_t event_base, int32_t event_id, Callback callback) 
-   : _event_base { event_base }, _event_id { event_id }, _callback { callback } {
+  CallbackInterface() {
     esp_event_handler_instance_register(
-      _event_base, _event_id, callback_wrapper, static_cast<void*>(this), &instance);
+      IP_EVENT, IP_EVENT_STA_GOT_IP,
+      on_connect_callback_wrapper,
+      static_cast<void*>(this),
+      &on_connect_handle
+    );
+
+    esp_event_handler_instance_register(
+      WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED,
+      on_disconnect_callback_wrapper,
+      static_cast<void*>(this),
+      &on_disconnect_handle
+    );
   }
 
-  ~EventCallback() {
-    esp_event_handler_instance_unregister(_event_base, _event_id, instance);
+  virtual ~CallbackInterface() {
+    esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, on_connect_handle);
+    esp_event_handler_instance_unregister(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, on_disconnect_handle);
   }
 
-  EventCallback(const EventCallback&) = delete;
-  EventCallback& operator= (const EventCallback&) = delete;
-  EventCallback(EventCallback&&) = default;
-  EventCallback& operator= (EventCallback&&) = default;
+  CallbackInterface(const CallbackInterface&) = delete;
+  CallbackInterface& operator= (const CallbackInterface&) = delete;
+  CallbackInterface(CallbackInterface&&) = default;
+  CallbackInterface& operator= (CallbackInterface&&) = default;
 
+  virtual void on_wifi_connect() = 0;
+  virtual void on_wifi_disconnect() = 0;
 private:
-  esp_event_base_t _event_base;
-  int32_t _event_id;
-  std::function<void()> _callback;
-  esp_event_handler_instance_t instance { nullptr };
+  esp_event_handler_instance_t on_connect_handle, on_disconnect_handle;
 
-  static void callback_wrapper(void* arg, esp_event_base_t, int32_t, void*) {
-    auto& self = *static_cast<EventCallback*>(arg);
-    self._callback();
+  void static on_connect_callback_wrapper(void* arg, esp_event_base_t, int32_t, void*) {
+    auto& self = *static_cast<CallbackInterface*>(arg);
+    self.on_wifi_connect();
   }
-};
 
-class ConnectCallback : public EventCallback {
-public:
-  template <typename Callback>
-  ConnectCallback(Callback callback) : EventCallback { IP_EVENT, IP_EVENT_STA_GOT_IP, callback } {}
-};
-
-class DisconnectCallback : public EventCallback {
-public:
-  template <typename Callback>
-  DisconnectCallback(Callback callback) : EventCallback { WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, callback } {}
+  void static on_disconnect_callback_wrapper(void* arg, esp_event_base_t, int32_t, void*) {
+    auto& self = *static_cast<CallbackInterface*>(arg);
+    self.on_wifi_disconnect();
+  }
 };
 
 };
