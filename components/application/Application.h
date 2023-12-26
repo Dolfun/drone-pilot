@@ -1,6 +1,6 @@
 #pragma once
 #include "WifiManager.h"
-#include "Task.h"
+#include "Task.hpp"
 #include <memory>
 
 class Application {
@@ -9,11 +9,9 @@ public:
 
   void on_wifi_connect();
   void on_wifi_disconnect();
-  // void on_message_receive(MessageData&&);
 private:
   std::unique_ptr<WifiManager::ConnectCallback> wifi_connect_callback;
   std::unique_ptr<WifiManager::DisconnectCallback> wifi_disconnect_callback;
-  // std::unique_ptr<ConnectionManager> connection_manager{};
 };
 
 class ApplicationTask : public Task<4096> {
