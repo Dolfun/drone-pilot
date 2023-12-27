@@ -1,4 +1,4 @@
-#include "WifiManager.h"
+#include "Wifi.h"
 #include "nvs_flash.h"
 #include "esp_log.h"
 #include <cstring>
@@ -8,7 +8,7 @@
 char wifi_ssid[32] = CONFIG_ESP_WIFI_SSID;
 char wifi_pass[64] = CONFIG_ESP_WIFI_PASSWORD;
 
-void WifiManager::init() {
+void Wifi::init() {
   // Initialize non-volatile storage
   auto error = nvs_flash_init();
   if (error == ESP_ERR_NVS_NO_FREE_PAGES || error == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -57,6 +57,6 @@ void WifiManager::init() {
   esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, disconnect_callback, nullptr, nullptr);
 }
 
-void WifiManager::start() {
+void Wifi::start() {
   ESP_ERROR_CHECK(esp_wifi_start());
 }

@@ -8,7 +8,7 @@ public:
   
 private:
   void task_function() override {
-    WifiManager::init();
+    Wifi::init();
     
     Application app;
     app.run();

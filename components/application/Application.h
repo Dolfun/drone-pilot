@@ -1,7 +1,7 @@
 #pragma once
-#include "WifiManager.h"
+#include "Wifi.h"
 
-class Application : public WifiManager::CallbackInterface {
+class Application : public Wifi::CallbackInterface {
 public:
   Application();
 

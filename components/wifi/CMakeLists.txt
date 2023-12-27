@@ -1,7 +1,7 @@
 idf_component_register(
   SRCS
-    "WifiManager.h"
-    "WifiManager.cc"
+    "Wifi.h"
+    "Wifi.cc"
   INCLUDE_DIRS
     "."
   REQUIRES

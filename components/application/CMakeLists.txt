@@ -6,6 +6,6 @@ idf_component_register(
   INCLUDE_DIRS
     "."
   REQUIRES
-    wifi_manager
+    wifi
     freertos_utility
 )

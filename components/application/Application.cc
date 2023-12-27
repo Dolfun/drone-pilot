@@ -1,7 +1,7 @@
 #include "Application.h"
 
 Application::Application() {
-  WifiManager::start();
+  Wifi::start();
 }
 
 void Application::on_wifi_connect() {

@@ -1,7 +1,7 @@
 #pragma once
 #include "esp_wifi.h"
 
-namespace WifiManager {
+namespace Wifi {
 
 void init();
 void start();
