@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <array>
 
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 class Queue {
 public:
   Queue() {
@@ -27,19 +27,19 @@ public:
   Queue& operator= (Queue&&) = default;
 
   auto peek() const -> std::optional<T> {
-    return _peek(static_cast<TickType_t>(0));
+    return peek_impl(static_cast<TickType_t>(0));
   }
 
-  auto peek_until() -> std::optional<T> {
-    return _peek(portMAX_DELAY);
+  auto peek_until() const -> std::optional<T> {
+    return peek_impl(portMAX_DELAY);
   }
 
   auto pop() -> std::optional<T> {
-    return _pop(static_cast<TickType_t>(0));
+    return pop_impl(static_cast<TickType_t>(0));
   }
 
   auto pop_until() -> std::optional<T> {
-    return _pop(portMAX_DELAY);
+    return pop_impl(portMAX_DELAY);
   }
 
   bool push(const T& item) {
@@ -47,15 +47,15 @@ public:
     return (error == pdTRUE);
   }
 
-  size_t size() const {
-    return static_cast<size_t>(uxQueueMessagesWaiting(handle));
+  std::size_t size() const {
+    return static_cast<std::size_t>(uxQueueMessagesWaiting(handle));
   }
 
-  size_t free_size() const {
-    return static_cast<size_t>(uxQueueSpacesAvailable(handle));
+  std::size_t free_size() const {
+    return static_cast<std::size_t>(uxQueueSpacesAvailable(handle));
   }
 
-  size_t capacity() const {
+  std::size_t capacity() const {
     return N;
   }
 
@@ -68,11 +68,11 @@ public:
   }
 
 private:
-  QueueHandle_t handle { nullptr };
-  std::array<uint8_t, N * sizeof(T)> storage_buffer {};
+  QueueHandle_t handle;
+  std::array<uint8_t, N * sizeof(T)> storage_buffer;
   StaticQueue_t queue_buffer;
 
-  auto _peek(TickType_t ticks_to_wait) const -> std::optional<T> {
+  auto peek_impl(TickType_t ticks_to_wait) const -> std::optional<T> {
     T item;
     if (xQueuePeek(handle, static_cast<void*>(&item), ticks_to_wait)) {
       return item;
@@ -81,7 +81,7 @@ private:
     }
   }
 
-  auto _pop(TickType_t ticks_to_wait) -> std::optional<T> {
+  auto pop_impl(TickType_t ticks_to_wait) -> std::optional<T> {
     T item;
     if (xQueueReceive(handle, static_cast<void*>(&item), ticks_to_wait)) {
       return item;
