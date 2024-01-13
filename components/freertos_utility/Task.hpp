@@ -58,13 +58,13 @@ template <size_t N>
 class TaskInterface : public Task<N> {
 public:
   TaskInterface(const char* name, UBaseType_t priority)
-    : Task<N>(name, priority, task_function_wrapper, static_cast<void*>(this)) {}
+    : Task<N> { name, priority, task_function_wrapper, static_cast<void*>(this) } {}
 
 private:
   virtual void task_function() = 0;
 
   static void task_function_wrapper(void* arg) {
-    auto& self = *static_cast<TaskInterface*>(arg);
+    auto& self = *static_cast<TaskInterface<N>*>(arg);
     self.task_function();
   }
 };
