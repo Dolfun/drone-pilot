@@ -1,7 +1,4 @@
 idf_component_register(
-  SRCS
-    "Task.hpp"
-    "Queue.hpp"
   INCLUDE_DIRS
     "."
   REQUIRES
