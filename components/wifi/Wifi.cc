@@ -49,7 +49,7 @@ void Wifi::init() {
 
   auto disconnect_callback = [] (void*, esp_event_base_t, int32_t, void*) {
       ESP_LOGI(WIFI_LOG_TAG, "retrying to connect...");
-    esp_wifi_connect();
+      esp_wifi_connect();
     };
 
   esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, start_callback, nullptr, nullptr);
