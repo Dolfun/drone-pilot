@@ -16,7 +16,7 @@ void blink_led(void*) {
 }
 
 static Task<512> led_task { "blink_led", 10, blink_led, nullptr };
-static ApplicationTask application_task {};
+static ApplicationTask application_task;
 
 extern "C" void app_main() {
   for (;;) {
