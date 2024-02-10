@@ -1,0 +1,14 @@
+idf_component_register(
+  SRCS
+  "NetworkManager.h"
+  "NetworkManager.cc"
+  "Sender.h"
+  "Receiver.h"
+  INCLUDE_DIRS
+    "."
+  REQUIRES
+    asio
+    wifi
+    freertos_utility
+    drone_common
+)

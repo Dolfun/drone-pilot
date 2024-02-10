@@ -1,18 +1,16 @@
 #include "Application.h"
+#include "NetworkingTask.h"
+#include "Wifi.h"
+
+static NetworkingTask networking_task;
 
 Application::Application() {
-  Wifi::start();
-}
-
-void Application::on_wifi_connect() {
-
-}
-
-void Application::on_wifi_disconnect() {
-  
+  network_manager = std::make_unique<NetworkManager>(networking_task.get_io_context(), command_queue);
 }
 
 void Application::run() {
+  Wifi::start();
+  
   for (;;) {
     vTaskDelay(pdTICKS_TO_MS(500));
   }

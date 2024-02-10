@@ -8,4 +8,5 @@ idf_component_register(
   REQUIRES
     wifi
     freertos_utility
+    networking
 )

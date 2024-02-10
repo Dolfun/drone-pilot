@@ -1,15 +1,14 @@
 #pragma once
-#include "Wifi.h"
+#include "NetworkManager.h"
+#include <memory>
 
-class Application : public Wifi::CallbackInterface {
+class Application {
 public:
   Application();
 
-  void on_wifi_connect() override;
-  void on_wifi_disconnect() override;
-
   void run();
-
+  
 private:
-
+  CommandQueue command_queue;
+  std::unique_ptr<NetworkManager> network_manager;
 };
