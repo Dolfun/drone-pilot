@@ -4,9 +4,8 @@
 
 static NetworkingTask networking_task;
 
-Application::Application() {
-  network_manager = std::make_unique<NetworkManager>(networking_task.get_io_context(), command_queue);
-}
+Application::Application() 
+  : network_manager(networking_task.get_io_context(), command_queue) {}
 
 void Application::run() {
   Wifi::start();
