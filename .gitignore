@@ -7,3 +7,5 @@ sdkconfig.old
 
 managed_components/
 dependencies.lock
+
+warnings.txt
