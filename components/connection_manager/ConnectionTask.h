@@ -1,6 +1,6 @@
 #pragma once
 #include "Task.hpp"
-#include "ConnectionManager.h"
+#include "Client.h"
 
 class ConnectionTask : public TaskInterface<4096> {
 public:

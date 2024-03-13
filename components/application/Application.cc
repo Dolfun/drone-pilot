@@ -5,7 +5,7 @@
 static ConnectionTask connection_task;
 
 Application::Application() 
-  : connection_manager(connection_task.get_io_context()) {}
+  : client(connection_task.get_io_context()) {}
 
 void Application::run() {
   Wifi::start();

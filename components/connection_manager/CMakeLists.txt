@@ -1,7 +1,7 @@
 idf_component_register(
   SRCS
-  "ConnectionManager.h"
-  "ConnectionManager.cc"
+  "Client.h"
+  "Client.cc"
   "ConnectionTask.h"
   "Session.h"
   "Session.cc"

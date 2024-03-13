@@ -6,9 +6,9 @@
 
 using asio::ip::tcp;
 
-class ConnectionManager : public Wifi::Interface {
+class Client : public Wifi::Interface {
 public:
-  ConnectionManager(asio::io_context&);
+  Client(asio::io_context&);
 
   void on_wifi_connect() override;
   void on_wifi_disconnect() override;

@@ -1,15 +1,15 @@
-#include "ConnectionManager.h"
+#include "Client.h"
 #include "esp_log.h"
 
 const char* ip_address { CONFIG_ESP_MASTER_IP_ADDRESS };
 const char* port_no    { CONFIG_ESP_MASTER_PORT_NO    };
 
-#define LOG_TAG "ConnectionManager"
+#define LOG_TAG "Client"
 
-ConnectionManager::ConnectionManager(asio::io_context& _io_context)
+Client::Client(asio::io_context& _io_context)
     : io_context { _io_context }, socket { io_context } {}
 
-void ConnectionManager::connect() {
+void Client::connect() {
   if (is_connected) return;
 
   static tcp::resolver resolver { io_context };
@@ -27,17 +27,17 @@ void ConnectionManager::connect() {
   });
 }
 
-void ConnectionManager::disconnect() {
+void Client::disconnect() {
   is_connected = false;
   session.reset();
 }
 
-void ConnectionManager::on_wifi_connect() {
+void Client::on_wifi_connect() {
   to_retry = true;
   connect();
 }
 
-void ConnectionManager::on_wifi_disconnect() {
+void Client::on_wifi_disconnect() {
   to_retry = false;
   disconnect();
 }
