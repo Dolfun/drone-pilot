@@ -1,5 +1,5 @@
 #pragma once
-#include "NetworkManager.h"
+#include "ConnectionManager.h"
 
 class Application {
 public:
@@ -8,6 +8,5 @@ public:
   void run();
   
 private:
-  CommandQueue command_queue;
-  NetworkManager network_manager;
+  ConnectionManager connection_manager;
 };

@@ -1,11 +1,11 @@
 #include "Application.h"
-#include "NetworkingTask.h"
+#include "ConnectionTask.h"
 #include "Wifi.h"
 
-static NetworkingTask networking_task;
+static ConnectionTask connection_task;
 
 Application::Application() 
-  : network_manager(networking_task.get_io_context(), command_queue) {}
+  : connection_manager(connection_task.get_io_context()) {}
 
 void Application::run() {
   Wifi::start();

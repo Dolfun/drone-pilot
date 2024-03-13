@@ -1,10 +1,10 @@
 idf_component_register(
   SRCS
-  "NetworkManager.h"
-  "NetworkManager.cc"
-  "CommandReceiver.h"
-  "SocketManager.h"
-  "SocketManager.cc"
+  "ConnectionManager.h"
+  "ConnectionManager.cc"
+  "ConnectionTask.h"
+  "Session.h"
+  "Session.cc"
   INCLUDE_DIRS
     "."
   REQUIRES

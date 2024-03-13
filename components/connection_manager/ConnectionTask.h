@@ -1,11 +1,10 @@
 #pragma once
 #include "Task.hpp"
-#include "NetworkManager.h"
-#include <memory>
+#include "ConnectionManager.h"
 
-class NetworkingTask : public TaskInterface<4096> {
+class ConnectionTask : public TaskInterface<4096> {
 public:
-  NetworkingTask() : TaskInterface("networking_task", 17) {}
+  ConnectionTask() : TaskInterface("connection_task", 17) {}
 
   asio::io_context& get_io_context() {
     return io_context;

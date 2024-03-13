@@ -19,11 +19,11 @@ static Task<1024> led_task { "blink_led", 10, blink_led, nullptr };
 static ApplicationTask application_task;
 
 extern "C" void app_main() {
-  for (;;) {
-    ESP_LOGI("main", "free_heap_size: %luKiB", esp_get_free_heap_size() / 1024);
-    ESP_LOGI("main", "largerst_free_block_size: %uKiB", heap_caps_get_largest_free_block(MALLOC_CAP_DEFAULT) / 1024);
-    ESP_LOGI("main", "minimum_free_size: %luKiB", esp_get_minimum_free_heap_size() / 1024);
+  // for (;;) {
+  //   ESP_LOGI("main", "free_heap_size: %luKiB", esp_get_free_heap_size() / 1024);
+  //   ESP_LOGI("main", "largerst_free_block_size: %uKiB", heap_caps_get_largest_free_block(MALLOC_CAP_DEFAULT) / 1024);
+  //   ESP_LOGI("main", "minimum_free_size: %luKiB", esp_get_minimum_free_heap_size() / 1024);
 
-    vTaskDelay(pdMS_TO_TICKS(10'000));
-  }
+  //   vTaskDelay(pdMS_TO_TICKS(10'000));
+  // }
 }
