@@ -8,5 +8,4 @@ idf_component_register(
   REQUIRES
     wifi
     freertos_utility
-    connection_manager
 )

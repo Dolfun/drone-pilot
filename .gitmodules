@@ -1,6 +1,0 @@
-[submodule "components/asio/asio"]
-	path = components/asio/asio
-	url = https://github.com/espressif/asio.git
-[submodule "components/drone_common/drone-common"]
-	path = components/drone_common/drone-common
-	url = https://github.com/Dolfun/drone-common.git
