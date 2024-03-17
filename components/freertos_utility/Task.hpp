@@ -1,6 +1,6 @@
 #pragma once
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 #include <array>
 
 enum class TaskAffinity : UBaseType_t {
