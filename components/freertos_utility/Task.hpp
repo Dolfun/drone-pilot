@@ -9,7 +9,7 @@ enum class TaskAffinity : UBaseType_t {
   CPUx = tskNO_AFFINITY,
 };
 
-template <size_t N>
+template <std::size_t N>
 class Task {
 public:
   Task(const char* name, UBaseType_t priority, TaskFunction_t task_function, void* arg) {
@@ -54,7 +54,7 @@ private:
   std::array<StackType_t, N> stack_buffer;
 };
 
-template <size_t N>
+template <std::size_t N>
 class TaskInterface : public Task<N> {
 public:
   TaskInterface(const char* name, UBaseType_t priority)
