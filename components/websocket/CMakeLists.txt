@@ -1,0 +1,10 @@
+idf_component_register(
+  SRCS
+    "Server.h"
+    "Server.cc"
+  INCLUDE_DIRS
+    "."
+  REQUIRES
+    wifi
+    esp_http_server
+)
